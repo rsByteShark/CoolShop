@@ -20,6 +20,8 @@ const pl = {
 
     illegalCharInName: "twoje imie posiada niedozwolone znaki",
 
+    illegalCharInFeedback: "twój feedback posiada niedozwolone znaki",
+
     illegalNameLength: "imię musi mieć od 1 do 25 znaków",
 
     illegalMail: "Twój mail jest nieodpowiedni",

@@ -15,7 +15,7 @@ export default function ProductCard({ product, router }: ProductCardProps) {
 
         clickEvent.stopPropagation();
 
-        router.push(`/products/1`);
+        router.push(`/products/${product.id}`);
 
     }
 

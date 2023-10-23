@@ -422,3 +422,41 @@ module.exports.apiRequestCheck = (req, res, callback, jwtErrorCallback) => {
 
 
 }
+
+/**Deletes entire data from development sqlite db (except fakestore api products) */
+module.exports.clearDatabase = async () => {
+
+    const { PrismaClient } = require('@prisma/client');
+
+    /**@type {import("@prisma/client").PrismaClient} */
+    const prisma = new PrismaClient();
+
+
+    await prisma.fakeapiproductsOfOrder.deleteMany().catch(err => {
+
+        console.log(err);
+
+    });
+
+    await prisma.order.deleteMany().catch(err => {
+
+        console.log(err);
+
+
+    });
+
+    await prisma.order.deleteMany().catch(err => {
+
+        console.log(err);
+
+
+    });
+
+    await prisma.user.deleteMany().catch(err => {
+
+        console.log(err);
+
+
+    });
+
+}

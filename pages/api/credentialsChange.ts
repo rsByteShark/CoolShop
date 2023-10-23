@@ -53,23 +53,35 @@ export default async function handler(
                                     }
                                 }).then(() => {
 
-                                    //create new jwt session token with updated username
-                                    const jwtToken = jwt.sign(
-                                        { username: newUsername },
-                                        Buffer.from(process.env.JWT_PRIVATE_RSA as string, "base64").toString(),
-                                        { algorithm: "RS256", expiresIn: ((60 * 60) * 24) * 7 }
-                                    )
+                                    //update also creator name in all user orders
+                                    prisma.order.updateMany({
+                                        data: {
+                                            orderCreatorName: newUsername
+                                        }
+                                    }).then(() => {
 
-                                    const responsePayload = JSON.stringify({ userName: newUsername } as UserInfo);
+                                        //create new jwt session token with updated username
+                                        const jwtToken = jwt.sign(
+                                            { username: newUsername },
+                                            Buffer.from(process.env.JWT_PRIVATE_RSA as string, "base64").toString(),
+                                            { algorithm: "RS256", expiresIn: ((60 * 60) * 24) * 7 }
+                                        )
 
-                                    res.setHeader("Set-Cookie", `JWTSESSION=${jwtToken}; HttpOnly; ${`Max-Age=${((60 * 60) * 24) * 7};`} SameSite=Strict`);
+                                        const responsePayload = JSON.stringify({ userName: newUsername } as UserInfo);
 
-                                    res.setHeader("Content-Type", "application/json");
+                                        res.setHeader("Set-Cookie", `JWTSESSION=${jwtToken}; HttpOnly; ${`Max-Age=${((60 * 60) * 24) * 7};`} SameSite=Strict`);
 
-                                    res.setHeader("Content-Length", `${responsePayload.length}`)
+                                        res.setHeader("Content-Type", "application/json");
 
-                                    res.status(200).end(responsePayload);
+                                        res.setHeader("Content-Length", `${responsePayload.length}`)
 
+                                        res.status(200).end(responsePayload);
+
+                                    }).catch(err => {
+
+                                        res.status(400).end();
+
+                                    })
 
                                 }).catch((err) => {
 

@@ -154,7 +154,10 @@
 
 }
 
+
+
 @media only screen and (min-width:900px) {
+
 
     .cartProductCheckBoxContainer {
 
@@ -197,6 +200,8 @@
         min-height: calc(3vh + 1vw);
 
         padding: 5%;
+
+        white-space: nowrap;
     }
 
     .fixedSpan {

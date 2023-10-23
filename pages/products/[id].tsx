@@ -14,8 +14,6 @@ import prisma from '@/db/prismaClient';
 
 export const getServerSideProps = async (obj: any) => {
 
-    console.log(obj.params.id);
-
 
     //as we know that fakeapiproducts id is just incremental number we can get from db first six products
     const product = await prisma.fakeapidatalocalstorage.findFirst({
@@ -30,8 +28,6 @@ export const getServerSideProps = async (obj: any) => {
 }
 
 export default function Page({ product }: InferGetStaticPropsType<typeof getServerSideProps>) {
-
-    console.log(product);
 
     const globalContext = useContext(GlobalContext);
 
@@ -108,24 +104,30 @@ export default function Page({ product }: InferGetStaticPropsType<typeof getServ
                 <div className={`${styles.addToCartButtonContainer}`}>
                     <Button onClick={() => {
 
-                        globalContext?.updateCart((prevState) => {
+                        if (globalContext?.curentUserInfo.userName) {
 
-                            const newState = [...prevState];
+                            globalContext?.updateCart((prevState) => {
 
-                            newState.push({
-                                product: product,
-                                productInCartQuantity: desiredProductQuantity
+                                const newState = [...prevState];
+
+                                newState.push({
+                                    product: product,
+                                    productInCartQuantity: desiredProductQuantity
+                                })
+
+                                globalContext.updateInfoComponentConfig({
+                                    infoType: "info",
+                                    infoText: "Product added to cart",
+                                    infoComponentIsVisable: true
+                                })
+
+                                return newState
+
                             })
 
-                            globalContext.updateInfoComponentConfig({
-                                infoType: "info",
-                                infoText: "Product added to cart",
-                                infoComponentIsVisable: true
-                            })
+                        } else globalContext?.updateLoginRegisterModalIsOpen(true);
 
-                            return newState
 
-                        })
 
                     }} variant="contained" color='primary'>{coolShopLocalesData[locale as CoolShopLocale].addToCart}</Button>
                 </div>

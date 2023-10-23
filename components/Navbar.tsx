@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import coolShopLocalesData from "../locales/coolShopLocales"
 import type { CoolShopLocale } from '@/typings/types';
 import { NavbarProps } from "@/typings/types";
-import LoginRegisterFormModal, { defaultLoginRegisterFormTheme } from "./LoginRegisterFormModal";
+import LoginRegisterFormModal from "./LoginRegisterFormModal";
 import { GlobalContext } from "@/pages/_app";
 import InfoComponent from "./InfoComponent";
 

@@ -19,11 +19,26 @@ model User {
 }
 
 model Order {
-    id                         String                    @id @unique
+    id                         String                   @id @unique
+    status                     String
     orderTotalPrice            Float
-    orderProductsFromFakestore fakeapidatalocalstorage[]
-    User                       User?                     @relation(fields: [orderCreatorName], references: [username])
+    orderProductsFromFakestore FakeapiproductsOfOrder[]
+    User                       User?                    @relation(fields: [orderCreatorName], references: [username])
     orderCreatorName           String?
+}
+
+model FakeapiproductsOfOrder {
+    order Order @relation(fields: [orderID], references: [id])
+
+    orderID String
+
+    product fakeapidatalocalstorage @relation(fields: [productID], references: [id])
+
+    productID Int
+
+    productQuantity Int
+
+    @@id([orderID, productID])
 }
 
 model fakeapidatalocalstorage {
@@ -40,5 +55,5 @@ model fakeapidatalocalstorage {
     productQuantity Int
 
     productImageExternalURL String
-    orders                  Order[]
+    orders                  FakeapiproductsOfOrder[]
 }

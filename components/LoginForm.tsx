@@ -11,7 +11,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { ThemeProvider } from '@mui/material/styles';
-import type { FormProps } from '@/typings/types';
+import type { FormProps, UserOrder } from '@/typings/types';
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { InputAdornment, IconButton } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
@@ -106,11 +106,13 @@ function LoginForm({ defaultTheme, switchTo }: FormProps) {
 
                 if (res.status === 200) {
 
-                    res.json().then((data: UserInfo) => {
+                    res.json().then((data: { userInfo: UserInfo, userOrders: UserOrder[] }) => {
 
                         globalContext?.updateCurentUserInfo({
-                            userName: data.userName,
+                            userName: data.userInfo.userName,
                         })
+
+                        globalContext?.updateUserOrders(data.userOrders);
 
                         updateFormAwaitsResponse(false);
 

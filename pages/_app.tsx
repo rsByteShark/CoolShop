@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app'
 import React, { useState, useEffect } from "react"
 import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] })
-import type { PaginationConfig, GlobalContextType, UserInfo, JWTFormat, InfoComponentConfig, ProductsCache, Product, CartItem } from '@/typings/types'
+import type { PaginationConfig, GlobalContextType, UserInfo, JWTFormat, InfoComponentConfig, Product, CartItem, UserOrder } from '@/typings/types'
 import { defaultLoginRegisterFormTheme } from '@/components/LoginRegisterFormModal'
 import { ThemeProvider } from '@emotion/react'
 
@@ -23,26 +23,11 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const [productsForDisplay, updateProductsForDisplay] = useState<Product[]>();
 
-  const [cart, updateCart] = useState<CartItem[]>([{
-    product: {
+  const [cart, updateCart] = useState<CartItem[]>([]);
 
-      id: 1,
+  const [userOrders, updateUserOrders] = useState<UserOrder[]>([]);
 
-      title: "mock product",
-
-      price: 10,
-
-      category: "car",
-
-      description: "dascsadsa",
-
-      productQuantity: 1030,
-
-      productImageExternalURL: "/fakeapiproductsimages/1.webp",
-
-    }, productInCartQuantity: 1,
-    totalPrice: 10
-  }]);
+  const [totalCartValue, updateTotalCartValue] = useState<number>(0);
 
   const [infoComponentConfig, updateInfoComponentConfig] = useState<InfoComponentConfig>({
     infoComponentIsVisable: false,
@@ -56,14 +41,80 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const [initialUserApiCallDone, updateInitialUserApiCallDone] = useState(false);
 
+  const updateCartMiddleware = (callBackOrNewState: CartItem[] | ((prevState: CartItem[]) => CartItem[])) => {
+
+    if (typeof callBackOrNewState === "function") {
+
+      updateCart(prevState => {
+
+        const newState = callBackOrNewState(prevState);
+
+        //count new total value of cart
+
+        let totalPriceOfProductsInCart = 0;
+
+        const duplicateDetection: number[] = [];
+
+        newState.forEach((cartItem, index) => {
+
+          if (duplicateDetection.includes(cartItem.product.id)) {
+
+            newState.splice(index, 1);
+
+          } else {
+
+            duplicateDetection.push(cartItem.product.id);
+
+            totalPriceOfProductsInCart = totalPriceOfProductsInCart + (cartItem.product.price * cartItem.productInCartQuantity)
+
+          }
+
+        })
+
+        updateTotalCartValue(totalPriceOfProductsInCart);
+
+        return newState
+
+      })
+
+    } else {
+
+      let totalPriceOfProductsInCart = 0;
+
+      const duplicateDetection: number[] = [];
+
+      callBackOrNewState.forEach((cartItem, index) => {
+
+        if (duplicateDetection.includes(cartItem.product.id)) {
+
+          callBackOrNewState.splice(index, 1);
+
+        } else {
+
+          duplicateDetection.push(cartItem.product.id);
+
+          totalPriceOfProductsInCart = totalPriceOfProductsInCart + (cartItem.product.price * cartItem.productInCartQuantity)
+
+        }
+
+      })
+
+      updateTotalCartValue(totalPriceOfProductsInCart);
+
+      updateCart(callBackOrNewState);
+
+
+
+    }
+
+  }
+
   useEffect(() => {
 
     fetch("/api/user", {
       credentials: "same-origin",
       method: "POST",
     }).then(res => {
-
-      console.log(res.status);
 
       if (res.status === 200) {
 
@@ -78,6 +129,37 @@ export default function App({ Component, pageProps }: AppProps) {
       } else updateInitialUserApiCallDone(true);
 
     });
+
+
+    const userOrdersRequestPayload = JSON.stringify({
+      type: "get",
+    });
+
+    fetch("/api/order", {
+      credentials: "same-origin",
+      method: "POST",
+      body: userOrdersRequestPayload,
+      headers: {
+        "Content-Type": "application/json",
+        "Content-Length": `${userOrdersRequestPayload.length}`,
+      }
+    }).then(res => {
+
+      if (res.status == 200) {
+
+        res.json().then(data => {
+
+          const userOrders: UserOrder[] = data;
+
+          updateUserOrders(userOrders);
+
+        })
+
+      }
+
+
+
+    })
 
   }, []);
 
@@ -101,7 +183,10 @@ export default function App({ Component, pageProps }: AppProps) {
       cachedproductsIDRange,
       updateProductsCachedIDRange,
       cart,
-      updateCart
+      updateCart: updateCartMiddleware,
+      totalCartValue,
+      updateUserOrders,
+      userOrders
     }}>
       <ThemeProvider theme={defaultLoginRegisterFormTheme}>
         <div className={`${inter.className}`}>

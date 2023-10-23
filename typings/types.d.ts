@@ -36,7 +36,13 @@ export interface GlobalContextType {
 
     cart: CartItem[]
 
-    updateCart: Dispatch<SetStateAction<CartItem[]> | ((prevState: CartItem[]) => CartItem[])>
+    updateCart: (callBackOrNewState: CartItem[] | ((prevState: CartItem[]) => CartItem[])) => void
+
+    totalCartValue: number
+
+    updateUserOrders: Dispatch<SetStateAction<UserOrder[]> | ((prevState: UserOrder[]) => UserOrder[])>
+
+    userOrders: UserOrder[]
 
 }
 
@@ -133,6 +139,8 @@ export type CartItem = {
     productInCartQuantity: number
 
 }
+
+export type StripedCart = { itemID: number, productQuantity: number }[]
 
 export interface CartItemProps {
 
@@ -262,3 +270,36 @@ export type ProductsCache = {
 
 export type CoolShopLocale = "pl" | "en"
 
+export type UserOrder = {
+
+    id: string
+
+    status: string
+
+    orderTotalPrice: number
+
+}
+
+type ProductView = {
+
+    id: number
+
+    title: string
+
+    inOrderQuantity: number
+
+    inOrderTotalPrice: number
+
+}
+
+
+type OrderDetails = {
+
+    totalPrice: number
+
+    orderStatus: string
+
+
+    orderProducts: ProductView[]
+
+}

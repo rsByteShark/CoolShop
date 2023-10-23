@@ -100,8 +100,6 @@ export default function Home({ initialStaticProducts, initialTotalProducts }: In
 
         res.json().then((data: { products: Product[], totalProducts: number }) => {
 
-          console.log(data.products.length, "products fetched");
-
           globalContext?.updateProductsForDisplay(prevState => {
 
             if (prevState) {

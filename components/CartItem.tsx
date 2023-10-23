@@ -5,6 +5,7 @@ import styles from "@/styles/Account.module.scss"
 import type { CartItemProps } from "@/typings/types";
 import { useContext } from "react"
 import { GlobalContext } from "@/pages/_app";
+import Link from "next/link";
 
 
 function CartItem({ cartItem, cartItemIndex }: CartItemProps) {
@@ -12,16 +13,13 @@ function CartItem({ cartItem, cartItemIndex }: CartItemProps) {
     const globalContext = useContext(GlobalContext);
 
     return (
-        <main className={`${styles.mainContainer}`}>
+        <div className={`${styles.mainContainer}`}>
             <div className={`${styles.fieldContainer}`}>
-                <div className={styles.cartProductCheckBoxContainer}>
-                    <input className={styles.cartProductCheckBox} type="checkbox" />
-                </div>
                 <div className={`${styles.fieldLabelItem}`}>
                     <Image src={`/fakeapiproductsimages/${cartItem.product.id}.webp`} alt="img" width={145} height={80} ></Image>
                 </div>
                 <div className={`${styles.fieldTextItem}`}>
-                    <span className={styles.fixedSpan}>{cartItem.product.title}</span>
+                    <Link href={`../products/${cartItem.product.id}`} className={styles.fixedSpan}>{cartItem.product.title}</Link>
                 </div>
                 <div className={`${styles.fieldButtonItem}`}>
                     <ProductCounterInterface
@@ -47,7 +45,7 @@ function CartItem({ cartItem, cartItemIndex }: CartItemProps) {
                     <DeleteIcon />
                 </button>
             </div>
-        </main>
+        </div>
     );
 }
 

@@ -31,9 +31,21 @@ export default function AccountActions({ accountActionsAreVisable, switchAccount
 
             }
 
+            router.push("/");
+
             switchAccountActionsVisibility(prevState => !prevState);
             document.body.style.cursor = "";
             updateAwaitsForResponse(false);
+
+            globalContext?.updateInfoComponentConfig({
+                infoType: "info",
+
+                infoText: "loged out",
+
+                infoComponentIsVisable: true
+            })
+
+
 
         });
 
@@ -45,6 +57,7 @@ export default function AccountActions({ accountActionsAreVisable, switchAccount
         accountActionsAreVisable ? <div className={`${styles.accountActionsContainer}`}>
             <div className={`${styles.accountActions}`}>
                 <button onClick={() => { router.push("/account"); switchAccountActionsVisibility(prevState => !prevState) }} className={`${styles.accountAction}`}>Profile</button>
+                <button onClick={() => { router.push("/account/cart"); switchAccountActionsVisibility(prevState => !prevState) }} className={`${styles.accountAction}`}>Cart</button>
                 <button disabled={awaitsForResponse ? true : false} onClick={() => handleLogout()} className={`${styles.accountAction}`}>Logout</button>
             </div>
         </div> : null

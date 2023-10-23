@@ -1,6 +1,6 @@
 import { ret404 } from './register'
 import type { NextApiRequest, NextApiResponse } from 'next';
-import type { LoginCredentials, UserInfo } from '@/typings/types';
+import type { LoginCredentials, UserInfo, UserOrder } from '@/typings/types';
 import { validateEmail, validateName, validatePassword } from '@/utils/formValidation'
 import stripLow from "validator/lib/stripLow"
 import prisma from "../../db/prismaClient"
@@ -154,7 +154,57 @@ export default async function handler(
                                 { algorithm: "RS256", expiresIn: ((60 * 60) * 24) * 7 }
                             )
 
-                            const responsePayload = JSON.stringify({ userName: user.username } as UserInfo);
+                            //include user orders
+                            //get user orders
+                            const userOrders = await prisma.user.findFirst({
+                                where: {
+                                    username: user.username
+                                },
+                                select: {
+                                    orders: {
+                                        include: {
+                                            orderProductsFromFakestore: {
+                                                select: {
+                                                    product: true,
+                                                    orderID: false,
+                                                    productID: false,
+                                                    productQuantity: true
+                                                }
+                                            }
+                                        }
+                                    },
+                                    username: false,
+                                    email: false,
+                                    password: false
+                                }
+
+                            })
+
+                            console.log(userOrders?.orders[0]);
+
+
+                            const retOrders: UserOrder[] = [];
+
+                            if (userOrders) {
+
+                                userOrders?.orders.forEach(userOrder => {
+
+                                    const retOrder: UserOrder = {} as UserOrder;
+
+                                    retOrder.id = userOrder.id;
+
+                                    retOrder.orderTotalPrice = userOrder.orderTotalPrice;
+
+                                    retOrder.status = userOrder.status;
+
+                                    retOrders.push(retOrder);
+
+                                });
+
+                            }
+
+
+                            const responsePayload = JSON.stringify({ userInfo: { userName: user.username }, userOrders: retOrders } as { userInfo: UserInfo, userOrders: UserOrder[] });
 
                             res.setHeader("Set-Cookie", `JWTSESSION=${jwtToken}; HttpOnly; ${recivedCredentials.rememberChecked ? `Max-Age=${((60 * 60) * 24) * 7};` : ""} SameSite=Strict`);
 

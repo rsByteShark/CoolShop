@@ -37,8 +37,6 @@ function ProductCounterInterface({ productQuantity, initialCounterProductQuantit
 
             prevState[cartItemIndex].productInCartQuantity = desiredProductQuantity;
 
-            console.log("updating product quantity", prevState);
-
             return prevState
         });
 

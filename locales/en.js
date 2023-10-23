@@ -20,6 +20,8 @@ const en = {
 
     illegalCharInName: "your name contains illegal characters",
 
+    illegalCharInFeedback: "your feedback contains illegal characters",
+
     illegalNameLength: "name must be between 4 and 25 characters",
 
     illegalMail: "Your mail isn't valid",

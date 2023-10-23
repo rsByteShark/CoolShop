@@ -60,8 +60,6 @@ function AccountProfile() {
             }
         }).then(res => {
 
-            console.log(res.status);
-
             if (res.status === 200) {
 
                 res.json().then((data: UserInfo) => {
