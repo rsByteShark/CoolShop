@@ -169,7 +169,7 @@ module.exports.getVercelProjectEnvs = (restToken, projectName) => {
 
                 if (res.headers["content-type"].includes("application/json")) {
 
-                    const projectEnv = JSON.parse(gatheredData.toString()).env
+                    const projectEnv = JSON.parse(gatheredData.toString()).envs
 
                     resolve(projectEnv);
 
