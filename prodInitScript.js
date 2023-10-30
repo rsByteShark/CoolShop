@@ -6,7 +6,7 @@
 /** */
 const { getVercelProjectEnvs, addEnvVarsToVercelProject } = require("./utils/vercelRestApiUtils")
 
-const projectName = "CoolShop";
+const projectName = "cool-shop";
 
 (async () => {
 
