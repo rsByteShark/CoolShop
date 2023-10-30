@@ -4,11 +4,14 @@
  * secret for vercel cron job that will be executed evry 24 hours (as there is a limit two 24-hour cron jobs for hobby vercel plan)
  */
 /** */
-const { getVercelProjectEnvs, addEnvVarsToVercelProject } = require("./utils/generalBackendUtils")
+const { getVercelProjectEnvs, addEnvVarsToVercelProject } = require("./utils/vercelRestApiUtils")
 
 const projectName = "CoolShop";
 
 (async () => {
+
+
+    console.log('Init script started');
 
 
     if (!process.env.API_KEY) throw "Error VERCEL_API_KEY don't exist "
