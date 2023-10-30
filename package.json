@@ -4,8 +4,8 @@
   "private": true,
   "types": "./typings/types.d.ts",
   "scripts": {
-    "dev": "node ./db/initScript.js",
-    "build": "next build",
+    "dev": "node ./devInitScript.js",
+    "build": "node ./prodInitScript.js",
     "start": "next start",
     "lint": "next lint"
   },

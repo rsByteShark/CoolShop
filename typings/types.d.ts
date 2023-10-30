@@ -303,3 +303,11 @@ type OrderDetails = {
     orderProducts: ProductView[]
 
 }
+
+type EnvEntry = {
+
+    key: string,
+
+    value: string
+
+}

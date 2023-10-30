@@ -1,0 +1,59 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider  = "postgresql"
+    url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+    directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model User {
+    username String @unique
+
+    email String @unique
+
+    password String
+
+    orders Order[]
+}
+
+model Order {
+    id                         String                   @id @unique
+    status                     String
+    orderTotalPrice            Float
+    orderProductsFromFakestore FakeapiproductsOfOrder[]
+    User                       User?                    @relation(fields: [orderCreatorName], references: [username])
+    orderCreatorName           String?
+}
+
+model FakeapiproductsOfOrder {
+    order Order @relation(fields: [orderID], references: [id])
+
+    orderID String
+
+    product fakeapidatalocalstorage @relation(fields: [productID], references: [id])
+
+    productID Int
+
+    productQuantity Int
+
+    @@id([orderID, productID])
+}
+
+model fakeapidatalocalstorage {
+    id Int @id @unique
+
+    title String
+
+    price Float
+
+    category String
+
+    description String
+
+    productQuantity Int
+
+    productImageExternalURL String
+    orders                  FakeapiproductsOfOrder[]
+}

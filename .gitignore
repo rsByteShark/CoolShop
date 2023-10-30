@@ -31,5 +31,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+*.sqlite
+
 # local env files
 .env*.local

@@ -1,10 +1,10 @@
 const { spawn } = require('child_process');
 const fs = require("fs");
-const { checkIfEnvFileExists, generateAsymmetricPemEncodedRSAKeysForJWT, populateDBwithFakestoreapiData, modifyEnvFile } = require("../utils/generalBackendUtils");
+const { checkIfEnvFileExists, generateAsymmetricPemEncodedRSAKeysForJWT, populateDBwithFakestoreapiData, modifyEnvFile } = require("./utils/generalBackendUtils");
 console.log('Initializing Enviroment...\n\n');
 const dotenv = require('dotenv');
 const envFilePath = `${process.cwd()}\\.env.local`;
-const fakeapiproductsimagespath = `${__dirname}/../public/fakeapiproductsimages`;
+const fakeapiproductsimagespath = `${__dirname}/public/fakeapiproductsimages`;
 
 /**This is value in seconds that indicates how often fakestoreapi products data will be fetched from source and be updated in local database */
 const fakestoreapidataRefreshInterval = (1000 * 60) * 60 * 24;
@@ -138,7 +138,7 @@ const fakestoreapidataRefreshInterval = (1000 * 60) * 60 * 24;
     console.log("initializing database...\n\n");
 
 
-    const prismaDBPushProcess = spawn("npx", ["prisma", "db", "push"], {
+    const prismaDBPushProcess = spawn("npx", ["prisma", "db", "push", "--schema=./prisma/devSchema.prisma"], {
         stdio: "inherit",
         cwd: process.cwd(),
         env: process.env,
@@ -163,7 +163,7 @@ const fakestoreapidataRefreshInterval = (1000 * 60) * 60 * 24;
 
                 const timeOfNextDataRefresh = (new Date().getTime() + fakestoreapidataRefreshInterval)
 
-                /**@type {import("../typings/types").CoolShopEnvVariables} */
+                /**@type {import("./typings/types").CoolShopEnvVariables} */
                 const updatedEnvVars = dotenv.parse(fs.readFileSync(envFilePath));
 
                 updatedEnvVars.NEXT_FAKESTORE_API_REFRESH = String(timeOfNextDataRefresh);
@@ -174,7 +174,7 @@ const fakestoreapidataRefreshInterval = (1000 * 60) * 60 * 24;
 
                     await populateDBwithFakestoreapiData(fakeapiproductsimagespath);
 
-                    /**@type {import("../typings/types").CoolShopEnvVariables} */
+                    /**@type {import("./typings/types").CoolShopEnvVariables} */
                     const updatedEnvVars = dotenv.parse(fs.readFileSync(envFilePath));
 
                     updatedEnvVars.NEXT_FAKESTORE_API_REFRESH = (new Date().getTime() + fakestoreapidataRefreshInterval);
@@ -208,7 +208,7 @@ const fakestoreapidataRefreshInterval = (1000 * 60) * 60 * 24;
 
                 await populateDBwithFakestoreapiData(fakeapiproductsimagespath);
 
-                /**@type {import("../typings/types").CoolShopEnvVariables} */
+                /**@type {import("./typings/types").CoolShopEnvVariables} */
                 const updatedEnvVars = dotenv.parse(fs.readFileSync(envFilePath));
 
                 updatedEnvVars.NEXT_FAKESTORE_API_REFRESH = (new Date().getTime() + fakestoreapidataRefreshInterval);
