@@ -5,7 +5,7 @@
  */
 /** */
 const { getVercelProjectEnvs, addEnvVarsToVercelProject } = require("./utils/vercelRestApiUtils")
-
+const { spawn } = require('child_process');
 const { generateAsymmetricPemEncodedRSAKeysForJWT } = require("./utils/generalBackendUtils")
 
 const projectName = "cool-shop";
