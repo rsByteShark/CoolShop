@@ -6,6 +6,8 @@
 /** */
 const { getVercelProjectEnvs, addEnvVarsToVercelProject } = require("./utils/vercelRestApiUtils")
 
+const { generateAsymmetricPemEncodedRSAKeysForJWT } = require("./utils/generalBackendUtils")
+
 const projectName = "cool-shop";
 
 (async () => {

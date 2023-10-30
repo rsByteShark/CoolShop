@@ -4,7 +4,6 @@ const { get } = require("https");
 const sharp = require("sharp");
 const rsa = forge.pki.rsa;
 const jwt = require("jsonwebtoken");
-const prisma = require("../db/prismaClient");
 
 
 module.exports.EXPECTED_PRODUCT_FIELDS = ["id", "title", "price", "category", "description", "productQuantity", "productImageExternalURL"];
@@ -224,7 +223,7 @@ module.exports.populateDBwithFakestoreapiData = (fakeapiproductsimagespath) => {
 module.exports.fetchFakestoreapiProductImage = (product, fakeapiproductsimagespath) => {
 
     return new Promise((resolveProductImageFetch, rejectImageFetch) => {
-
+        const prisma = require("../db/prismaClient");
         try {
 
             get(product.image, (res) => {
@@ -374,6 +373,7 @@ module.exports.modifyEnvFile = (envFilePath, newEnvFileContent) => {
  */
 module.exports.apiRequestCheck = (req, res, callback, jwtErrorCallback) => {
 
+    const prisma = require("../db/prismaClient");
 
     return new Promise(async (resolveRequestCheck) => {
 
