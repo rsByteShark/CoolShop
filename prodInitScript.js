@@ -8,15 +8,13 @@ const { getVercelProjectEnvs, addEnvVarsToVercelProject } = require("./utils/gen
 
 const projectName = "CoolShop";
 
-const envFilePath = `./.env.local`;
-
 (async () => {
 
 
-    if (!process.env.VERCEL_API_KEY) throw "Error VERCEL_API_KEY don't exist "
+    if (!process.env.API_KEY) throw "Error VERCEL_API_KEY don't exist "
 
     //check if JWT secrets don't already exists in vercel config
-    const vercelProjectEnv = await getVercelProjectEnvs(process.env.VERCEL_API_KEY, projectName);
+    const vercelProjectEnv = await getVercelProjectEnvs(process.env.API_KEY, projectName);
     const expectedEnvKeys = ["JWT_PRIVATE_RSA", "JWT_PUBLIC_RSA"];
     const hits = 0;
 
