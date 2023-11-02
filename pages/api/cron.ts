@@ -9,7 +9,7 @@ export default async function handler(
 
     try {
 
-        const obj = clearDatabase();
+        const obj = await clearDatabase();
         res.status(200).json(obj);
 
     } catch (error) {

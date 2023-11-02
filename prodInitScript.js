@@ -1,12 +1,6 @@
-/**.env.local file must be created in init script for production 
- * this init script will handle generation of evry secrets such as:
- * JWT key pair (used for user authorization and authentication)
- * secret for vercel cron job that will be executed evry 24 hours (as there is a limit two 24-hour cron jobs for hobby vercel plan)
- */
-/** */
 const { getVercelProjectEnvs, addEnvVarsToVercelProject } = require("./utils/vercelRestApiUtils")
 const { spawn } = require('child_process');
-const { generateAsymmetricPemEncodedRSAKeysForJWT } = require("./utils/generalBackendUtils")
+const { generateAsymmetricPemEncodedRSAKeysForJWT, populateDBwithFakestoreapiData } = require("./utils/generalBackendUtils")
 
 const projectName = "cool-shop";
 
@@ -64,8 +58,11 @@ const projectName = "cool-shop";
         });
 
 
-        prismaDBclientCreationProcess.on("exit", () => {
+        prismaDBclientCreationProcess.on("exit", async () => {
 
+            //populate db with fakestoreapidata
+
+            await populateDBwithFakestoreapiData();
 
             console.log('Starting next build...\n\n');
 

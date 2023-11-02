@@ -56,8 +56,6 @@ module.exports.generateAsymmetricPemEncodedRSAKeysForJWT = () => {
 /**
  * This function calls fakestore api `/products` route and populate local database with it's content
  * 
- * Then it fetches evry product image converts it to webp format and saves into `fakeapiproductsimagespath` directory
- * 
  * @param {string} fakeapiproductsimagespath path where fakestoreapi images will be stored 
  * @returns {Promise}
  */
@@ -423,13 +421,10 @@ module.exports.apiRequestCheck = (req, res, callback, jwtErrorCallback) => {
 
 }
 
-/**Deletes entire data from development sqlite db (except fakestore api products) */
+/**Deletes entire data from db (except fakestore api products) */
 module.exports.clearDatabase = async () => {
 
-    const { PrismaClient } = require('@prisma/client');
-
-    /**@type {import("@prisma/client").PrismaClient} */
-    const prisma = new PrismaClient();
+    const prisma = require("../db/prismaClient");
 
 
     await prisma.fakeapiproductsOfOrder.deleteMany().catch(err => {
