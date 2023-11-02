@@ -248,16 +248,9 @@ module.exports.fetchFakestoreapiProductImage = (product, fakeapiproductsimagespa
                     sharpBuffer.metadata().then(metadata => {
                         if (metadata.format === 'jpeg') {
 
-                            fs.writeFileSync(`${fakeapiproductsimagespath}/${product.id}.webp`, "");
+                            fs.appendFileSync(`${fakeapiproductsimagespath}/${product.id}.webp`, "");
 
-                            const os = require("os");
-
-                            console.log(os.platform);
-
-
-                            const adjustedosPathForSharp = os.platform === "linux" ? "" : `${fakeapiproductsimagespath}/${product.id}.webp`
-
-                            sharpBuffer.webp().toFile(`.\\public\\fakeapiproductsimages\\${product.id}.webp`,
+                            sharpBuffer.webp().toFile(`${fakeapiproductsimagespath}/${product.id}.webp`,
                                 (err, info) => {
 
                                     if (err) {
