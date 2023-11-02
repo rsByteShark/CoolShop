@@ -252,9 +252,12 @@ module.exports.fetchFakestoreapiProductImage = (product, fakeapiproductsimagespa
 
                             const os = require("os");
 
-                            const adjustedosPathForSharp = os.platform === "linux" ? `.\\public\\fakeapiproductsimages\\${product.id}.webp` : `${fakeapiproductsimagespath}/${product.id}.webp`
+                            console.log(os.platform);
 
-                            sharpBuffer.webp().toFile(adjustedosPathForSharp,
+
+                            const adjustedosPathForSharp = os.platform === "linux" ? "" : `${fakeapiproductsimagespath}/${product.id}.webp`
+
+                            sharpBuffer.webp().toFile(`.\\public\\fakeapiproductsimages\\${product.id}.webp`,
                                 (err, info) => {
 
                                     if (err) {
