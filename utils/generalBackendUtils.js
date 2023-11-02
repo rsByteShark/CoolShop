@@ -1,6 +1,7 @@
 const fs = require("fs");
 const forge = require('node-forge');
 const { get } = require("https");
+/**@type {import("sharp")} */
 const sharp = require("sharp");
 const rsa = forge.pki.rsa;
 const jwt = require("jsonwebtoken");
@@ -248,24 +249,13 @@ module.exports.fetchFakestoreapiProductImage = (product, fakeapiproductsimagespa
                     sharpBuffer.metadata().then(metadata => {
                         if (metadata.format === 'jpeg') {
 
-                            fs.appendFileSync(`${process.cwd()}/public/fakeapiproductsimages/${product.id}.webp`, "");
 
+                            sharpBuffer.webp().toBuffer().then(webpBuffer => {
 
+                                fs.appendFileSync(`./public/fakeapiproductsimages/${product.id}.webp`, webpBuffer);
 
-                            sharpBuffer.webp().toFile(`${process.cwd()}/public/fakeapiproductsimages/${product.id}.webp`,
-                                (err, info) => {
+                            })
 
-                                    if (err) {
-
-                                        rejectImageFetch(err);
-
-                                    } else {
-
-                                        resolveProductImageFetch();
-
-                                    }
-
-                                });
 
                         } else {
 
