@@ -188,7 +188,7 @@ module.exports.populateDBwithFakestoreapiData = (fakeapiproductsimagespath) => {
 
 
                         //fetch image from fakestoreapi and save it in public directory as webp
-                        await module.exports.fetchFakestoreapiProductImage(product, fakeapiproductsimagespath);
+                        if (fakeapiproductsimagespath) await module.exports.fetchFakestoreapiProductImage(product, fakeapiproductsimagespath);
 
                     }
 
