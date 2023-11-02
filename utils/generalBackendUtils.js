@@ -1,7 +1,6 @@
 const fs = require("fs");
 const forge = require('node-forge');
 const { get } = require("https");
-/**@type {import("sharp")} */
 const sharp = require("sharp");
 const rsa = forge.pki.rsa;
 const jwt = require("jsonwebtoken");
@@ -156,7 +155,7 @@ module.exports.populateDBwithFakestoreapiData = (fakeapiproductsimagespath) => {
                         }
 
                         //if image url changed fetch new image
-                        if (productImageChanged) await module.exports.fetchFakestoreapiProductImage(product, fakeapiproductsimagespath);
+                        if (productImageChanged && fakeapiproductsimagespath) await module.exports.fetchFakestoreapiProductImage(product, fakeapiproductsimagespath);
 
                     } else {
 
@@ -250,12 +249,20 @@ module.exports.fetchFakestoreapiProductImage = (product, fakeapiproductsimagespa
                         if (metadata.format === 'jpeg') {
 
 
-                            sharpBuffer.webp().toBuffer().then(webpBuffer => {
+                            sharpBuffer.webp().toFile(`${fakeapiproductsimagespath}/${product.id}.webp`,
+                                (err, info) => {
 
-                                fs.appendFileSync(`./public/fakeapiproductsimages/${product.id}.webp`, webpBuffer);
+                                    if (err) {
 
-                            })
+                                        rejectImageFetch(err);
 
+                                    } else {
+
+                                        resolveProductImageFetch();
+
+                                    }
+
+                                });
 
                         } else {
 

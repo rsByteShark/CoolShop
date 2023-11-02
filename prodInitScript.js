@@ -3,7 +3,6 @@ const { spawn } = require('child_process');
 const { generateAsymmetricPemEncodedRSAKeysForJWT, populateDBwithFakestoreapiData } = require("./utils/generalBackendUtils")
 
 const projectName = "cool-shop";
-const fakeapiproductsimagespath = `./public/fakeapiproductsimages`;
 
 (async () => {
 
@@ -63,7 +62,7 @@ const fakeapiproductsimagespath = `./public/fakeapiproductsimages`;
 
             //populate db with fakestoreapidata
 
-            await populateDBwithFakestoreapiData(fakeapiproductsimagespath);
+            await populateDBwithFakestoreapiData();
 
             console.log('Starting next build...\n\n');
 
