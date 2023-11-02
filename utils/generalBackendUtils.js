@@ -248,6 +248,8 @@ module.exports.fetchFakestoreapiProductImage = (product, fakeapiproductsimagespa
                     sharpBuffer.metadata().then(metadata => {
                         if (metadata.format === 'jpeg') {
 
+                            fs.writeFileSync(`${fakeapiproductsimagespath}/${product.id}.webp`, "");
+
                             sharpBuffer.webp().toFile(`${fakeapiproductsimagespath}/${product.id}.webp`,
                                 (err, info) => {
 
