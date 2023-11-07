@@ -14,15 +14,16 @@ While working locally with this project use "npm run dev", this command will exe
 This init script will:
 - generate Asymmetric RSA Keys For JWT signing and verification
 - create local sqlite database described in [`prisma dev schema`](./prisma/devSchema.prisma) for local dev tests
-- Populate local sqlite database with [fakestore api products data](https://fakestoreapi.com/) (for better performance evry product image will be copied in `.\public\fakeapiproductsimages` directory)
+- Populate local sqlite database with [fakestore api products data](https://fakestoreapi.com/) (for better performance every product image will be copied in `.\public\fakeapiproductsimages` directory)
 - create local .env.local file with env variables for local dev tests
 - execute "next dev" command
-When run locally fakestore api products data fetch occurs evry 24h to ensure data integrity.
+  
+When run locally fakestore api products data fetch occurs every 24h to ensure data integrity.
 
 # Vercel Production Mode
-When this project is imported to vercel and evrything described in [`Vercel Production Predeployment Notes`](#vercel-production-predeployment-notes) is configured correctly push done to main branch will create vercel deployment.
+When this project is imported to vercel and everything described in [`Vercel Production Predeployment Notes`](#vercel-production-predeployment-notes) is configured correctly push done to main branch will create vercel deployment.
 
-**Note**:[`Vercel production init script`](./prodInitScript.js) use preconfigured vercel env var with name "API_KEY", that contains [generated vercel api key](https://vercel.com/docs/rest-api) to automaticly get and set vercel env variables.
+**Note**: [`Vercel production init script`](./prodInitScript.js) use preconfigured vercel env var with name "API_KEY", that contains [generated vercel api key](https://vercel.com/docs/rest-api) to automaticly get and set vercel env variables.
 
 When vercel build starts [`production init script`](./prodInitScript.js) is launched and will:
 - check if Asymmetric RSA Keys For JWT signing and verification are included in vercel env variables. If they don't exist secrets are generated and set automaticly.
