@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node ./devInitScript.js",
     "build": "node ./prodInitScript.js",
-    "start": "next start",
+    "start": "node ./devInitScript.js",
     "lint": "next lint"
   },
   "dependencies": {
