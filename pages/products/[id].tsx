@@ -3,8 +3,7 @@ import styles from "@/styles/ProductPage.module.scss";
 import { useContext, useState } from "react";
 import Image from 'next/image';
 import Navbar from '@/components/Navbar';
-//removed mui button cause it caused poor loading performance on dynamic routes
-// import Button from '@mui/material/Button';
+import Button from '@mui/material/Button';
 import Head from 'next/head'
 import { useRouter } from "next/router";
 import type { CoolShopLocale, Product } from '@/typings/types';
@@ -103,7 +102,7 @@ export default function Page({ product }: InferGetStaticPropsType<typeof getServ
 
                 </div>
                 <div className={`${styles.addToCartButtonContainer}`}>
-                    <button onClick={() => {
+                    <Button onClick={() => {
 
                         if (globalContext?.curentUserInfo.userName) {
 
@@ -130,7 +129,7 @@ export default function Page({ product }: InferGetStaticPropsType<typeof getServ
 
 
 
-                    }} color='primary'>{coolShopLocalesData[locale as CoolShopLocale].addToCart}</button>
+                    }} color='primary'>{coolShopLocalesData[locale as CoolShopLocale].addToCart}</Button>
                 </div>
                 <div className={`${styles.productDescContainer}`}>
                     {`${product.description}`}

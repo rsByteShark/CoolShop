@@ -36,7 +36,7 @@ export default function ProductCard({ product, router }: ProductCardProps) {
                     <Button onClick={routeThroughButton} variant="contained" color='primary'>{coolShopLocalesData[locale as CoolShopLocale].buyNow} {Number(product.price).toFixed(2)}$</Button>
                 </div>
             </Link> :
-                <Skeleton className={styles.productCard} variant="text" sx={{ fontSize: '1rem', width: "75vw", height: "75vw" }} />}
+                <Skeleton className={styles.productCard} variant="text" sx={{ fontSize: '1rem' }} />}
 
         </>
 
