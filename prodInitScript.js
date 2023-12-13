@@ -33,7 +33,7 @@ const projectName = "cool-shop";
 
         const publicKey = Buffer.from(keys.publicKey).toString("base64");
 
-        const resStatus = await addEnvVarsToVercelProject(process.env.API_KEY, projectName, [{ key: "JWT_PRIVATE_RSA", value: privateKey }, { key: "JWT_PUBLIC_RSA", value: publicKey }]);
+        const resStatus = await addEnvVarsToVercelProject(process.env.API_KEY, projectName, [{ key: "JWT_PRIVATE_RSA", value: privateKey }, { key: "JWT_PUBLIC_RSA", value: publicKey }, { key: "NODE_ENV", value: "production" }]);
 
         if (resStatus !== 200) throw "Error while adding env vars through vercel api"
 
@@ -65,7 +65,6 @@ const projectName = "cool-shop";
             await populateDBwithFakestoreapiData();
 
             console.log('Starting next build...\n\n');
-
 
             spawn("next", ["build"], {
                 stdio: "inherit",
