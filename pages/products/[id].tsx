@@ -1,9 +1,10 @@
-import type { InferGetStaticPropsType, GetStaticPaths, } from 'next';
+import type { InferGetStaticPropsType } from 'next';
 import styles from "@/styles/ProductPage.module.scss";
 import { useContext, useState } from "react";
 import Image from 'next/image';
 import Navbar from '@/components/Navbar';
-import Button from '@mui/material/Button';
+//removed mui button cause it caused poor loading performance on dynamic routes
+// import Button from '@mui/material/Button';
 import Head from 'next/head'
 import { useRouter } from "next/router";
 import type { CoolShopLocale, Product } from '@/typings/types';
@@ -102,7 +103,7 @@ export default function Page({ product }: InferGetStaticPropsType<typeof getServ
 
                 </div>
                 <div className={`${styles.addToCartButtonContainer}`}>
-                    <Button onClick={() => {
+                    <button onClick={() => {
 
                         if (globalContext?.curentUserInfo.userName) {
 
@@ -129,7 +130,7 @@ export default function Page({ product }: InferGetStaticPropsType<typeof getServ
 
 
 
-                    }} variant="contained" color='primary'>{coolShopLocalesData[locale as CoolShopLocale].addToCart}</Button>
+                    }} color='primary'>{coolShopLocalesData[locale as CoolShopLocale].addToCart}</button>
                 </div>
                 <div className={`${styles.productDescContainer}`}>
                     {`${product.description}`}

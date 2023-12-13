@@ -4,7 +4,7 @@ export default function Document() {
   return (
     <Html>
       <Head title='Cool shop' />
-      <body>
+      <body style={{ height: "100vh" }}>
         <Main />
         <NextScript />
       </body>
